@@ -1,5 +1,5 @@
 <div>
-    <input name="movement_name" type="text" ng-model="movementEditC.name"/>
+    <input name="movement_name" type="text" ng-model="movementEditC.item.name"/>
 
     <button type="button"
             ng-click="movementEditC.save()">
@@ -9,7 +9,7 @@
     <hr/>
     <div class="preview">
         <h3>Preview</h3>
-        {{movementEditC.name}}
+        {{movementEditC.item.name}}
     </div>
 
     <hr/>

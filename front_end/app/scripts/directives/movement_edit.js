@@ -3,13 +3,14 @@
 
     function MovementEditController(movementsService) {
         var vm = this;
+        vm.item = {};
 
         movementsService.list().then(function(list) {
             vm.list = list;
         });
 
         vm.save = function() {
-            movementsService.save(vm);
+            movementsService.save(vm.item);
                 // .then(function(response) {
                 // });
         };
