@@ -1,0 +1,65 @@
+
+//clearfix
+
+.clearfix:before,
+.clearfix:after,
+.container:before,
+.container:after,
+.navbar-logo:before,
+.navbar-logo:after,
+.navbar-collapse:before,
+.navbar-collapse:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after,
+.navbar-collapse:after,
+.navbar-logo:after,
+.container:after {
+    clear: both;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1160px;
+}
+
+//navbar
+
+.navbar {
+    background-color: #ccc;
+    position: relative;
+    min-height: 10px;
+}
+
+.nav {
+    list-style: none;
+    padding-left: 0;
+    padding-right: 0;
+
+    li {
+        position: relative; 
+        display: block;
+        float: left;
+
+        a {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+        }
+    }
+}
+
+.navbar-nav {
+    float: left;
+    margin: 0;
+}
+
+.navbar-logo {
+    float: left;
+    p {
+        margin: 0;
+        padding: 10px 15px;
+    }
+}
