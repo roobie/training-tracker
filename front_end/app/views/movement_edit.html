@@ -1,0 +1,21 @@
+<div>
+    <input name="movement_name" type="text" ng-model="movementEditC.name"/>
+
+    <button type="button"
+            ng-click="movementEditC.save()">
+        Save
+    </button>
+
+    <hr/>
+    <div class="preview">
+        <h3>Preview</h3>
+        {{movementEditC.name}}
+    </div>
+
+    <hr/>
+    <div class="list">
+        <div ng-repeat="item in movementEditC.list">
+            <pre>{{item |json}}</pre>
+        </div>
+    </div>
+</div>

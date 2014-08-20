@@ -27,8 +27,8 @@ angular
         }
     })
     .config(function ($routeProvider, NAVIGATION_NODES) {
-        Object.keys(NAVIGATION_NODES).forEach(function(node_name) {
-            $routeProvider.when(node_name, NAVIGATION_NODES[node_name]);
+        Object.keys(NAVIGATION_NODES).forEach(function(nodeName) {
+            $routeProvider.when(nodeName, NAVIGATION_NODES[nodeName]);
         });
 
         $routeProvider.otherwise({
