@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name trainingTrackerApp.controller:MainCtrl
+ * @name tt.app.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the trainingTrackerApp
+ * Controller of the tt.app
  */
-angular.module('trainingTrackerApp')
+angular.module('tt.app')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

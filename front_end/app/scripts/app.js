@@ -2,31 +2,36 @@
 
 /**
  * @ngdoc overview
- * @name trainingTrackerApp
+ * @name tt.app
  * @description
- * # trainingTrackerApp
+ * # tt.app
  *
  * Main module of the application.
  */
 angular
-  .module('trainingTrackerApp', [
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+    .module('tt.app', [
+        'ngCookies',
+        'ngResource',
+        'ngRoute',
+        'ngSanitize',
+        'ngTouch'
+    ])
+    .constant('NAVIGATION_NODES', {
+        '/': {
+            templateUrl: 'views/main.html',
+            controller: 'MainCtrl'
+        },
+        '/about': {
+            templateUrl: 'views/about.html',
+            controller: 'AboutCtrl'
+        }
+    })
+    .config(function ($routeProvider, NAVIGATION_NODES) {
+        Object.keys(NAVIGATION_NODES).forEach(function(node_name) {
+            $routeProvider.when(node_name, NAVIGATION_NODES[node_name]);
+        });
+
+        $routeProvider.otherwise({
+            redirectTo: '/'
+        });
+    });
