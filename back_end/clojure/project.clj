@@ -12,6 +12,8 @@
                  [liberator "0.10.0"]
                  [compojure "1.1.3"]
                  [ring/ring-core "1.2.1"]
+                 [ring-cors "0.1.4"]
+                 [ring-middleware-format "0.4.0"]
 
                  [korma "0.3.0-beta9"]
                  [postgresql "9.1-901.jdbc4"]

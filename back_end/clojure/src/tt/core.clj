@@ -1,8 +1,13 @@
 (ns tt.core
   (:require [liberator.core :refer [resource defresource]]
+            [liberator.representation :refer [ring-response]]
+
+            [compojure.core :refer [defroutes ANY]]
+
             [ring.middleware.params :refer [wrap-params]]
-            [compojure.core :refer [defroutes
-                                    ANY POST GET PUT DELETE]]
+            [ring.middleware.cors :refer [wrap-cors]]
+            [ring.middleware.format :refer [wrap-restful-format]]
+
             [clojure.java.io :as io]
             [clojure.data.json :as json])
   (:import java.net.URL))
@@ -55,23 +60,34 @@
                 (:uri request)
                 (str id))))
 
+(def resource-defaults
+  :handle-options (ring-response
+                   {:headers {"Access-Control-Allow-Origin" "*"
+                              "Access-Control-Allow-Headers" "Content-Type"}}))
 
 ;; create and list entries
-(defresource list-resource
+(defresource list-resource resource-defaults
   :available-media-types ["application/json"]
-  :allowed-methods [:get :post]
+  :allowed-methods [:get :post :options]
   :known-content-type? #(check-content-type % ["application/json"])
   :malformed? #(parse-json % ::data)
   :post! #(let [id (str (inc (rand-int 100000)))]
             (dosync (alter entries assoc id (::data %)))
             {::id id})
-  :post-redirect? true
-  :location #(build-entry-url (get % :request) (get % ::id))
-  :handle-ok #(map (fn [id] (str (build-entry-url (get % :request) id)))
-                   (keys @entries)))
+  ;:post-redirect? false
+  ;:location #(build-entry-url (get % :request) (get % ::id))
+  :handle-created (ring-response
+                   {:headers {"Access-Control-Allow-Origin" "*"
+                              "Access-Control-Allow-Headers" "Content-Type"}})
+  :handle-ok (ring-response
+              {:headers {"Access-Control-Allow-Origin" "*"
+                         "Access-Control-Allow-Headers" "Content-Type"}}
+              :body #(map (fn [id] (str (build-entry-url (get % :request) id)))
+                          ;(keys @entries)
+                          entries)))
 
 (defresource entry-resource [id]
-  :allowed-methods [:get :put :delete]
+  :allowed-methods [:get :put :delete :options]
   :known-content-type? #(check-content-type % ["application/json"])
   :exists? (fn [_]
              (let [e (get @entries id)]
@@ -98,15 +114,27 @@
   ;; list
   ;; (ANY "/collection" [] list-resource)
 
-  (ANY "/movements/:id" [id] (entry-resource id))
-  (ANY "/movements" [] list-resource)
+  (ANY "/v1/movements/:id" [id] (entry-resource id))
+  (ANY "/v1/movements" [] list-resource)
   )
 
 
 
+(defn wrap-cors-simple
+  "Allow requests from all origins"
+  [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (update-in response
+                 [:headers "Access-Control-Allow-Origin"]
+                 (fn [_] "*")))))
+
 (def handler
-  (-> app
-      wrap-params))
+  (-> app wrap-params wrap-cors-simple)
+  ;(-> app (wrap-restful-format) )
+  )
+
+;(wrap-cors handler :access-control-allow-origin #"http://localhost:9000")
 
 (defn main
   []
