@@ -9,8 +9,7 @@
     "angular-cookies": "*",
     "angular-sanitize": "*",
     "angular-touch": "*",
-    "angular-route": "*",
-    "normalize.scss": "~2.2.0+normalize.2.1.3"
+    "angular-route": "*"
   },
   "devDependencies": {
     "angular-mocks": "*",
