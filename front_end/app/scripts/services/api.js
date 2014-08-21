@@ -5,7 +5,7 @@
     angular.module('tt.app')
         .service('API', function($http) {
             var apiService = this;
-            this.baseUrl = '//localhost:4567/v1/';
+            this.baseUrl = '//localhost:3000/v1/';
 
             var extractData = function(r) {
                 return r.data;
