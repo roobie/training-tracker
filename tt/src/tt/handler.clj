@@ -2,6 +2,9 @@
   (:require
    [clojure.string :as str]
 
+   [ring.middleware.json :refer [wrap-json-response]]
+   [ring.util.response :as rsp]
+
    [compojure.core :refer :all]
    [compojure.handler :as handler]
    [compojure.route :as route]
@@ -92,8 +95,10 @@
 
 (defroutes app-routes
   (GET "/" [] "Hello World")
-  (GET "/v1/movements" [] {:a "b"})
-  (POST "/v1/movements" [] [1 2 3])
+  (GET "/v1/movements" []
+       (rsp/response [1,2,3,4]))
+  (POST "/v1/movements" {{data :data} :params}
+        (rsp/response data))
   (route/resources "/")
   (route/not-found "Not Found"))
 
@@ -101,6 +106,7 @@
   ;(handler/api app-routes)
   (-> app-routes
       (handler/api)
+      (wrap-json-response)
       (wrap-cors1
        :access-control-allow-origin #"http://localhost:9000"
        :access-control-allow-headers ["Content-Type"] ;#"Content-Type"
